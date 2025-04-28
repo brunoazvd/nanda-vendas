@@ -1,4 +1,4 @@
-import VendaService from "../services/VendaService";
+import VendaService from "../services/VendaService.js";
 
 export default {
   async buscarTodasVendas(req, res) {
@@ -12,7 +12,7 @@ export default {
 
   async buscarVendaPorId(req, res) {
     try {
-      const venda = await VendaService.getById(req.params.id);
+      const venda = await VendaService.getById(Number(req.params.id));
       res.status(200).json(venda);
     } catch (err) {
       res.status(400).json({ error: true, message: err.message });
@@ -30,7 +30,7 @@ export default {
 
   async atualizarVenda(req, res) {
     try {
-      const venda = await VendaService.update(req.params.id, req.body);
+      const venda = await VendaService.update(Number(req.params.id), req.body);
       res.status(200).json(venda);
     } catch (err) {
       res.status(400).json({ error: true, message: err.message });
@@ -39,7 +39,7 @@ export default {
 
   async deletarVenda(req, res) {
     try {
-      await VendaService.delete(req.params.id);
+      await VendaService.delete(Number(req.params.id));
       res.status(200).json({ message: "Venda deletada com sucesso!" });
     } catch (err) {
       res.status(400).json({ error: true, message: err.message });
