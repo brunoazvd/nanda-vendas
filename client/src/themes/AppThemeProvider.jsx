@@ -6,16 +6,16 @@ import {
 } from '@mui/material/styles';
 
 function AppThemeProvider({ children }) {
-  const mode ="dark";
+  const mode = 'dark';
   const theme = responsiveFontSizes(
     createTheme({
       palette: {
         mode,
         primary: {
-          main: '#1c9c7c',
+          main: '#b0122e',
         },
         secondary: {
-          main: '#9DF3C4',
+          main: '#ffa9bd',
         },
         Ink: {
           Darkest: '#000000',
