@@ -76,10 +76,8 @@ async function main() {
   for (let i = 0; i < 20; i++) {
     const c = categorias[Math.floor(Math.random() * categorias.length)];
     const p = getRandomProduto(c);
-    const estaPedido = Math.random() > 0.35; // 0.77
-    const estaEntregueChance = estaPedido ? Math.random() : 0;
-    const estaPagoChance =
-      estaPedido && estaEntregueChance > 0.5 ? Math.random() : 0;
+    const estaPedido = Math.random() > 0.25; // 0.77
+    const estaPagoChance = estaPedido ? Math.random() : 0;
 
     await prisma.venda.create({
       data: {
@@ -91,8 +89,7 @@ async function main() {
         observacao:
           observacoes[c][Math.floor(Math.random() * observacoes[c].length)],
         estaPedido: estaPedido,
-        estaEntregue: estaEntregueChance > 0.5,
-        estaPago: estaPagoChance > 0.3,
+        estaPago: estaPagoChance > 0.7,
         data: new Date(Date.now() - Math.floor(Math.random() * trintaDiasEmMs)),
       },
     });

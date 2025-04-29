@@ -13,10 +13,9 @@ model Venda {
   produto           String
   cliente           String
   quantidade        Int
-  preco             Decimal    @db.Decimal(10, 2)  // Preço com até 2 casas decimais
+  preco             Decimal    @db.Decimal(10, 2)
   observacao        String?
   estaPedido        Boolean  @default(false)
-  estaEntregue      Boolean  @default(false)
   estaPago          Boolean  @default(false)
   data              DateTime 
   createdAt         DateTime @default(now())
