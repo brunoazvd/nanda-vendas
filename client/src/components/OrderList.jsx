@@ -18,7 +18,7 @@ import { updateVenda } from '@/api/vendas';
 //   "updatedAt": "2025-04-28T22:38:01.199Z"
 // }
 
-const OrderList = ({ orders, setOrders, ...props }) => {
+const OrderList = ({ rows, vendas, setVendas, ...props }) => {
   const collumns = [
     {
       field: 'data',
@@ -66,21 +66,21 @@ const OrderList = ({ orders, setOrders, ...props }) => {
   ];
 
   const updateBooleanValue = async (id, field) => {
-    const order = orders.find((order) => order.id === id);
-    order[field] = !order[field];
-    await updateVenda(id, { [field]: order[field] });
-    const updatedOrders = orders.map((o) => {
-      if (o.id === id) {
-        return order;
+    const venda = vendas.find((v) => v.id === id);
+    venda[field] = !venda[field];
+    await updateVenda(id, { [field]: venda[field] });
+    const updatedVendas = vendas.map((v) => {
+      if (v.id === id) {
+        return venda;
       }
-      return o;
+      return v;
     });
-    setOrders(updatedOrders);
+    setVendas(updatedVendas);
   };
 
   return (
     <Box {...props}>
-      <DataGrid rows={orders} columns={collumns} />
+      <DataGrid rows={rows} columns={collumns} />
     </Box>
   );
 };

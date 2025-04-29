@@ -9,18 +9,19 @@ import { getVendas } from '@/api/vendas';
 
 const Dashboard = () => {
   const [currentTab, setCurrentTab] = useState('1');
-  const [orders, setOrders] = useState([]);
+  const [vendas, setVendas] = useState([]);
 
   useEffect(() => {
     async function fetchVendas() {
-      const vendas = await getVendas();
-      setOrders(vendas);
+      console.log('fetching');
+      const vs = await getVendas();
+      setVendas(vs);
     }
 
     fetchVendas();
   }, []);
 
-  console.log(orders);
+  console.log(vendas);
 
   return (
     <Container sx={{ py: 2, position: 'relative' }}>
@@ -47,13 +48,25 @@ const Dashboard = () => {
         <TabContext value={currentTab}>
           <TabList onChange={(e, value) => setCurrentTab(value)}>
             <Tab label="Vendas Abertas" value="1" />
-            <Tab label="Histórico de Vendas" value="2" disabled />
+            <Tab label="Histórico de Vendas" value="2" />
           </TabList>
           <TabPanel value="1">
-            <OrderList orders={orders} setOrders={setOrders} />
+            <OrderList
+              rows={vendas.filter(
+                (v) => v.estaPedido === false || v.estaPago === false,
+              )}
+              vendas={vendas}
+              setVendas={setVendas}
+            />
           </TabPanel>
           <TabPanel value="2">
-            <OrderList orders={orders} setOrders={setOrders} />
+            <OrderList
+              rows={vendas.filter(
+                (v) => v.estaPedido === true && v.estaPago === true,
+              )}
+              vendas={vendas}
+              setVendas={setVendas}
+            />
           </TabPanel>
         </TabContext>
       </Box>
