@@ -1,11 +1,26 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { Typography, Stack, Container, Tab, Box, Chip } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import AddIcon from '@mui/icons-material/Add';
 import OrderList from '@/components/OrderList';
 
+import { getVendas } from '@/api/vendas';
+
 const Dashboard = () => {
   const [currentTab, setCurrentTab] = useState('1');
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    async function fetchVendas() {
+      const vendas = await getVendas();
+      setOrders(vendas);
+    }
+
+    fetchVendas();
+  }, []);
+
+  console.log(orders);
 
   return (
     <Container sx={{ py: 2, position: 'relative' }}>
@@ -32,13 +47,13 @@ const Dashboard = () => {
         <TabContext value={currentTab}>
           <TabList onChange={(e, value) => setCurrentTab(value)}>
             <Tab label="Vendas Abertas" value="1" />
-            <Tab label="Histórico de Vendas" value="2" />
+            <Tab label="Histórico de Vendas" value="2" disabled />
           </TabList>
           <TabPanel value="1">
-            <OrderList text="VENDAS ABERTAS TAB" />
+            <OrderList orders={orders} setOrders={setOrders} />
           </TabPanel>
           <TabPanel value="2">
-            <OrderList text="HISTÓRICO DE VENDAS TAB" />
+            <OrderList orders={orders} setOrders={setOrders} />
           </TabPanel>
         </TabContext>
       </Box>

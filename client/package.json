@@ -16,11 +16,12 @@
     "test:cover": "vitest run --coverage"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.2",
     "@mui/lab": "^7.0.0-beta.11",
     "@mui/material": "^7.0.2",
+    "@mui/x-data-grid": "^8.0.0-beta.3",
     "audit": "^0.0.6",
     "axios": "^1.7.7",
     "fix": "^0.0.3",
