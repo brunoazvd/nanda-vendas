@@ -30,7 +30,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     async function fetchVendas() {
-      console.log('fetching');
       const vs = await getVendas();
       setVendas(vs);
     }
@@ -89,7 +88,10 @@ const Dashboard = () => {
       </Container>
       <Modal open={isModalOpen} onClose={handleCloseModal}>
         <Box>
-          <OrderForm setVendas={setVendas} />
+          <OrderForm
+            setVendas={setVendas}
+            handleCloseModal={handleCloseModal}
+          />
         </Box>
       </Modal>
     </>

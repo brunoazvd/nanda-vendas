@@ -7,6 +7,8 @@ import OrderForm from './OrderForm';
 
 const OrderList = ({ rows, vendas, setVendas, ...props }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+
   const collumns = [
     {
       field: 'id',
@@ -15,8 +17,20 @@ const OrderList = ({ rows, vendas, setVendas, ...props }) => {
       resizable: false,
       renderCell: (value) => {
         return (
-          <Box onClick={() => console.log(value.row)}>
-            <EditIcon sx={{ mt: 1.5, opacity: 0.5, cursor: 'pointer' }} />
+          <Box>
+            <EditIcon
+              sx={{ mt: 1.5, ml: 0.25, opacity: 0.5, cursor: 'pointer' }}
+              onClick={() => {
+                setModalContent(
+                  <OrderForm
+                    setVendas={setVendas}
+                    order={value.row}
+                    handleCloseModal={handleCloseModal}
+                  />,
+                );
+                handleOpenModal();
+              }}
+            />
           </Box>
         );
       },
@@ -113,9 +127,7 @@ const OrderList = ({ rows, vendas, setVendas, ...props }) => {
         <DataGrid rows={rows} columns={collumns} />
       </Box>
       <Modal open={isModalOpen} onClose={handleCloseModal}>
-        <Box>
-          <OrderForm />
-        </Box>
+        <Box>{modalContent}</Box>
       </Modal>
     </>
   );

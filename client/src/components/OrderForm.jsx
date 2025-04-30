@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import dayjs from 'dayjs';
+
 import {
   Paper,
   Typography,
@@ -8,28 +11,14 @@ import {
   FormControl,
   InputLabel,
   Button,
+  Dialog,
 } from '@mui/material';
-import { useState } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
 
-// {
-//   Form Fields (shown attributes)
-//   "categoria": "MaisFit", -- dropdown menu (OK)
-//   "produto": "Doce de Leite", --  text field (OK)
-//   "cliente": "Milena", -- text field (OK)
-//   "quantidade": 1, -- number field (+, - buttons) (OK)
-//   "preco": "50", -- number field (2 decimals) (OK)
-//   "observacao": "", -- text field (OK)
-//   "data": "2025-04-11T12:33:42.546Z", -- datepicker, defaults to today
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 
-//   Hidden Attributes
-//   "id": 1
-//   "estaPedido": false,
-//   "estaPago": false,
-//   "createdAt": "2025-04-28T22:38:01.199Z",
-//   "updatedAt": "2025-04-28T22:38:01.199Z"
-// }
+import { createVenda, updateVenda, deleteVenda } from '@/api/vendas';
 
 const categorias = ['DeMillus', 'Tupperware', 'MaisFit'];
 
@@ -50,9 +39,10 @@ const getStateObject = (order) => {
       };
 };
 
-const OrderForm = ({ order = null, setVendas, ...props }) => {
+const OrderForm = ({ order = null, setVendas, handleCloseModal, ...props }) => {
   const [formData, setFormData] = useState(getStateObject(order));
   const [initialState, setInitialState] = useState(getStateObject(order));
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const mode = order ? 'edit' : 'new';
 
   const handleChange = (e) => {
@@ -60,13 +50,32 @@ const OrderForm = ({ order = null, setVendas, ...props }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (mode === 'new') {
-      console.log('New Order');
+      const novaVenda = await createVenda(formData);
+      setVendas((prev) => [...prev, novaVenda]);
+      handleCloseModal();
     } else {
-      console.log('Edit Order');
+      const changes = Object.keys(initialState).reduce((acc, key) => {
+        if (initialState[key] !== formData[key]) {
+          acc[key] = formData[key];
+        }
+        return acc;
+      }, {});
+      if (Object.keys(changes).length === 0) return;
+      const vendaAtualizada = await updateVenda(order.id, changes);
+      setVendas((prev) =>
+        prev.map((venda) => (venda.id === order.id ? vendaAtualizada : venda)),
+      );
+      handleCloseModal();
     }
+  };
+
+  const handleDeleteVenda = async () => {
+    await deleteVenda(order.id);
+    setVendas((prev) => prev.filter((venda) => venda.id !== order.id));
+    handleCloseModal();
   };
 
   return (
@@ -169,10 +178,55 @@ const OrderForm = ({ order = null, setVendas, ...props }) => {
             }}
             id="data"
           />
-          <Button variant="contained" size="large" type="submit">
-            Salvar
-          </Button>
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="contained"
+              size="large"
+              type="submit"
+              fullWidth
+              startIcon={<SaveIcon />}
+            >
+              Salvar
+            </Button>
+            {mode === 'edit' && (
+              <Button
+                variant="contained"
+                color="error"
+                size="large"
+                type="button"
+                fullWidth
+                onClick={() => setIsDialogOpen(true)}
+                startIcon={<DeleteIcon />}
+              >
+                Excluir
+              </Button>
+            )}
+          </Stack>
         </Stack>
+      )}
+      {mode === 'edit' && (
+        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+          <Stack p={3} spacing={2}>
+            <Typography variant="h2">Você tem certeza disso?</Typography>
+            <Stack direction="row" spacing={1}>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => setIsDialogOpen(false)}
+              >
+                Não, voltar
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                fullWidth
+                onClick={handleDeleteVenda}
+              >
+                Sim, excluir
+              </Button>
+            </Stack>
+          </Stack>
+        </Dialog>
       )}
     </Paper>
   );
