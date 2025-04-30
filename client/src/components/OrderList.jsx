@@ -1,5 +1,5 @@
 import { Box, Checkbox, Modal } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { updateVenda } from '@/api/vendas';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
@@ -124,7 +124,21 @@ const OrderList = ({ rows, vendas, setVendas, ...props }) => {
   return (
     <>
       <Box {...props}>
-        <DataGrid rows={rows} columns={collumns} />
+        <DataGrid
+          rows={rows}
+          columns={collumns}
+          disableRowSelectionOnClick
+          sx={{
+            [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]:
+              {
+                outline: 'none',
+              },
+            [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]:
+              {
+                outline: 'none',
+              },
+          }}
+        />
       </Box>
       <Modal open={isModalOpen} onClose={handleCloseModal}>
         <Box>{modalContent}</Box>
