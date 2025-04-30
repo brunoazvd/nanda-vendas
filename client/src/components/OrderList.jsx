@@ -1,9 +1,12 @@
-import { Box, Checkbox } from '@mui/material';
+import { Box, Checkbox, Modal } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { updateVenda } from '@/api/vendas';
+import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
+import OrderForm from './OrderForm';
 
 const OrderList = ({ rows, vendas, setVendas, ...props }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const collumns = [
     {
       field: 'id',
@@ -12,24 +15,11 @@ const OrderList = ({ rows, vendas, setVendas, ...props }) => {
       resizable: false,
       renderCell: (value) => {
         return (
-          <Box>
+          <Box onClick={() => console.log(value.row)}>
             <EditIcon sx={{ mt: 1.5, opacity: 0.5, cursor: 'pointer' }} />
           </Box>
         );
       },
-    },
-    {
-      field: 'data',
-      headerName: 'Data',
-      width: 120,
-      resizable: false,
-      valueFormatter: (value) => new Date(value).toLocaleDateString(),
-    },
-    {
-      field: 'categoria',
-      headerName: 'Categoria',
-      width: 120,
-      resizable: false,
     },
     {
       field: 'produto',
@@ -39,7 +29,6 @@ const OrderList = ({ rows, vendas, setVendas, ...props }) => {
       resizable: false,
     },
     { field: 'cliente', headerName: 'Cliente', width: 120, resizable: false },
-    { field: 'quantidade', headerName: 'Qtd', width: 50, resizable: false },
     {
       field: 'preco',
       headerName: 'Preço',
@@ -47,6 +36,7 @@ const OrderList = ({ rows, vendas, setVendas, ...props }) => {
       resizable: false,
       valueFormatter: (value) => `R$ ${Number(value).toFixed(2)}`,
     },
+    { field: 'quantidade', headerName: 'Qtd', width: 50, resizable: false },
     {
       field: 'observacao',
       headerName: 'Observação',
@@ -81,7 +71,28 @@ const OrderList = ({ rows, vendas, setVendas, ...props }) => {
         />
       ),
     },
+    {
+      field: 'categoria',
+      headerName: 'Categoria',
+      width: 120,
+      resizable: false,
+    },
+    {
+      field: 'data',
+      headerName: 'Data',
+      width: 120,
+      resizable: false,
+      valueFormatter: (value) => new Date(value).toLocaleDateString(),
+    },
   ];
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   const updateBooleanValue = async (id, field) => {
     const venda = vendas.find((v) => v.id === id);
@@ -97,9 +108,16 @@ const OrderList = ({ rows, vendas, setVendas, ...props }) => {
   };
 
   return (
-    <Box {...props}>
-      <DataGrid rows={rows} columns={collumns} />
-    </Box>
+    <>
+      <Box {...props}>
+        <DataGrid rows={rows} columns={collumns} />
+      </Box>
+      <Modal open={isModalOpen} onClose={handleCloseModal}>
+        <Box>
+          <OrderForm />
+        </Box>
+      </Modal>
+    </>
   );
 };
 

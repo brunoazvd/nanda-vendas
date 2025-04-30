@@ -88,7 +88,9 @@ const Dashboard = () => {
         </Box>
       </Container>
       <Modal open={isModalOpen} onClose={handleCloseModal}>
-        <OrderForm />
+        <Box>
+          <OrderForm setVendas={setVendas} />
+        </Box>
       </Modal>
     </>
   );

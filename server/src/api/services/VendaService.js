@@ -5,9 +5,24 @@ class VendaService {
     this.prisma = prisma;
   }
 
+  vendaSelect = {
+    id: true,
+    categoria: true,
+    produto: true,
+    cliente: true,
+    quantidade: true,
+    preco: true,
+    observacao: true,
+    estaPedido: true,
+    estaPago: true,
+    data: true,
+  };
+
   async getAll() {
     try {
-      const vendas = await this.prisma.venda.findMany();
+      const vendas = await this.prisma.venda.findMany({
+        select: this.vendaSelect,
+      });
       return vendas;
     } catch (error) {
       throw new Error(`Erro ao buscar vendas: ${error.message}`);
@@ -20,6 +35,7 @@ class VendaService {
         where: {
           id,
         },
+        select: this.vendaSelect,
       });
       return venda;
     } catch (error) {
@@ -31,6 +47,7 @@ class VendaService {
     try {
       const createdVenda = await this.prisma.venda.create({
         data: venda,
+        select: this.vendaSelect,
       });
       return createdVenda;
     } catch (error) {
@@ -38,13 +55,14 @@ class VendaService {
     }
   }
 
-  async update(id, venda) {
+  async update(id, updates) {
     try {
       const updatedVenda = await this.prisma.venda.update({
         where: {
           id,
         },
-        data: venda,
+        data: updates,
+        select: this.vendaSelect,
       });
       return updatedVenda;
     } catch (error) {
