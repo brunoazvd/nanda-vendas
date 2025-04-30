@@ -22,6 +22,9 @@ class VendaService {
     try {
       const vendas = await this.prisma.venda.findMany({
         select: this.vendaSelect,
+        orderBy: {
+          data: "desc",
+        },
       });
       return vendas;
     } catch (error) {

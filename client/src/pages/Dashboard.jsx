@@ -37,6 +37,8 @@ const Dashboard = () => {
     fetchVendas();
   }, []);
 
+  console.log(vendas);
+
   return (
     <>
       <Container sx={{ py: 2, position: 'relative' }}>

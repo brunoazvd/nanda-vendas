@@ -22,6 +22,10 @@ import { createVenda, updateVenda, deleteVenda } from '@/api/vendas';
 
 const categorias = ['DeMillus', 'Tupperware', 'MaisFit'];
 
+const ordenarPorData = (arr) => {
+  return [...arr].sort((a, b) => new Date(b.data) - new Date(a.data));
+};
+
 const getStateObject = (order) => {
   return order
     ? {
@@ -54,7 +58,7 @@ const OrderForm = ({ order = null, setVendas, handleCloseModal, ...props }) => {
     e.preventDefault();
     if (mode === 'new') {
       const novaVenda = await createVenda(formData);
-      setVendas((prev) => [...prev, novaVenda]);
+      setVendas((prev) => ordenarPorData([...prev, novaVenda]));
       handleCloseModal();
     } else {
       const changes = Object.keys(initialState).reduce((acc, key) => {
@@ -66,7 +70,11 @@ const OrderForm = ({ order = null, setVendas, handleCloseModal, ...props }) => {
       if (Object.keys(changes).length === 0) return;
       const vendaAtualizada = await updateVenda(order.id, changes);
       setVendas((prev) =>
-        prev.map((venda) => (venda.id === order.id ? vendaAtualizada : venda)),
+        ordenarPorData(
+          prev.map((venda) =>
+            venda.id === order.id ? vendaAtualizada : venda,
+          ),
+        ),
       );
       handleCloseModal();
     }
