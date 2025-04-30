@@ -80,7 +80,7 @@ function AppThemeProvider({ children }) {
       },
 
       typography: {
-        fontFamily: 'Dosis, sans-serif',
+        fontFamily: 'Nunito Sans, sans-serif',
 
         h1: {
           fontSize: '26px',
