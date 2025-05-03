@@ -95,8 +95,8 @@ const OrderForm = ({ order = null, setVendas, handleCloseModal, ...props }) => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        minWidth: '400px',
-        maxWidth: '700px',
+        minWidth: '300px',
+        maxWidth: '600px',
         p: 3,
         m: 0,
       }}

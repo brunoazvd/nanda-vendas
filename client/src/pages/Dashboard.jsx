@@ -67,7 +67,7 @@ const Dashboard = () => {
               <Tab label="Vendas Abertas" value="vendas_abertas" />
               <Tab label="Histórico de Vendas" value="historico_vendas" />
             </TabList>
-            <TabPanel value="vendas_abertas">
+            <TabPanel value="vendas_abertas" sx={{ px: 0 }}>
               <OrderList
                 rows={vendas.filter(
                   (v) => v.estaPedido === false || v.estaPago === false,
@@ -76,7 +76,7 @@ const Dashboard = () => {
                 setVendas={setVendas}
               />
             </TabPanel>
-            <TabPanel value="historico_vendas">
+            <TabPanel value="historico_vendas" sx={{ px: 0 }}>
               <OrderList
                 rows={vendas.filter(
                   (v) => v.estaPedido === true && v.estaPago === true,

@@ -5,7 +5,8 @@
   "license": "MIT",
   "author": "Bruno Azevedo <brunoazvd@protonmail.com>",
   "scripts": {
-    "dev": "vite --open --host",
+    "dev": "vite --open",
+    "dev:localhost": "vite --open --mode localhost",
     "start": "vite --open",
     "host": "vite --open --host",
     "build": "vite build",

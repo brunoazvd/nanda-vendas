@@ -11,10 +11,97 @@ const OrderList = ({ rows, vendas, setVendas, ...props }) => {
 
   const collumns = [
     {
+      field: 'produto',
+      headerName: 'Produto',
+      minWidth: 150,
+      resizable: false,
+      flex: 2,
+      disableColumnMenu: true,
+    },
+    {
+      field: 'cliente',
+      headerName: 'Cliente',
+      minWidth: 90,
+      resizable: false,
+      flex: 1,
+      disableColumnMenu: true,
+    },
+    {
+      field: 'preco',
+      headerName: 'Preço',
+      width: 90,
+      resizable: false,
+      valueFormatter: (value) => `R$ ${Number(value).toFixed(2)}`,
+      disableColumnMenu: true,
+    },
+    {
+      field: 'quantidade',
+      headerName: 'Qtd',
+      width: 50,
+      resizable: false,
+      disableColumnMenu: true,
+    },
+    {
+      field: 'observacao',
+      headerName: 'Observação',
+      minWidth: 180,
+      resizable: false,
+      flex: 2,
+      disableColumnMenu: true,
+    },
+    {
+      field: 'estaPedido',
+      headerName: 'Pedido',
+      width: 80,
+      resizable: false,
+      disableColumnMenu: true,
+      renderCell: (value) => (
+        <Checkbox
+          checked={value.row.estaPedido}
+          onClick={(e) => {
+            updateBooleanValue(value.row.id, value.field);
+          }}
+        />
+      ),
+    },
+    {
+      field: 'estaPago',
+      headerName: 'Pago',
+      width: 80,
+      resizable: false,
+      disableColumnMenu: true,
+      renderCell: (value) => (
+        <Checkbox
+          checked={value.row.estaPago}
+          onClick={(e) => {
+            updateBooleanValue(value.row.id, value.field);
+          }}
+        />
+      ),
+    },
+    {
+      field: 'categoria',
+      headerName: 'Categoria',
+      minWidth: 100,
+      resizable: false,
+      flex: 1,
+      disableColumnMenu: true,
+    },
+    {
+      field: 'data',
+      headerName: 'Data',
+      minWidth: 100,
+      resizable: false,
+      disableColumnMenu: true,
+      valueFormatter: (value) => new Date(value).toLocaleDateString(),
+    },
+    {
       field: 'id',
       headerName: '',
       width: 50,
       resizable: false,
+      disableColumnMenu: true,
+      disableOrdering: true,
       renderCell: (value) => {
         return (
           <Box>
@@ -34,69 +121,6 @@ const OrderList = ({ rows, vendas, setVendas, ...props }) => {
           </Box>
         );
       },
-    },
-    {
-      field: 'produto',
-      headerName: 'Produto',
-      width: 200,
-      flex: 1,
-      resizable: false,
-    },
-    { field: 'cliente', headerName: 'Cliente', width: 120, resizable: false },
-    {
-      field: 'preco',
-      headerName: 'Preço',
-      width: 80,
-      resizable: false,
-      valueFormatter: (value) => `R$ ${Number(value).toFixed(2)}`,
-    },
-    { field: 'quantidade', headerName: 'Qtd', width: 50, resizable: false },
-    {
-      field: 'observacao',
-      headerName: 'Observação',
-      width: 200,
-      resizable: false,
-    },
-    {
-      field: 'estaPedido',
-      headerName: 'Pedido',
-      width: 80,
-      resizable: false,
-      renderCell: (value) => (
-        <Checkbox
-          checked={value.row.estaPedido}
-          onClick={(e) => {
-            updateBooleanValue(value.row.id, value.field);
-          }}
-        />
-      ),
-    },
-    {
-      field: 'estaPago',
-      headerName: 'Pago',
-      width: 80,
-      resizable: false,
-      renderCell: (value) => (
-        <Checkbox
-          checked={value.row.estaPago}
-          onClick={(e) => {
-            updateBooleanValue(value.row.id, value.field);
-          }}
-        />
-      ),
-    },
-    {
-      field: 'categoria',
-      headerName: 'Categoria',
-      width: 120,
-      resizable: false,
-    },
-    {
-      field: 'data',
-      headerName: 'Data',
-      width: 120,
-      resizable: false,
-      valueFormatter: (value) => new Date(value).toLocaleDateString(),
     },
   ];
 
